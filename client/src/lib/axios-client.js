@@ -8,10 +8,17 @@ const axiosClient = axios.create({
   },
 });
 
-axiosClient.interceptors.response.use((response) => {
-  const method = response.config.method.toUpperCase();
-  if (["POST", "PUT", "PATCH", "DELETE"].includes(method || ""))
-    toast.success(response.data.message);
-});
+axiosClient.interceptors.response.use(
+  (response) => {
+    const method = response.config.method.toUpperCase();
+    if (["POST", "PUT", "PATCH", "DELETE"].includes(method || ""))
+      toast.success(response.data.message);
+    return response.data;
+  },
+  (error) => {
+    toast.error("Error Occured!");
+    return Promise.reject(error);
+  },
+);
 
 export default axiosClient;
